@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     }
 
     // 收到攻击的事件
-    public void Attacked(int demage){
+    public virtual void Attacked(int demage){
         // demage 为传过来的伤害值
         Wealth -= demage;
         if (Wealth <= 0){

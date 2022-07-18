@@ -8,8 +8,10 @@ using UnityEngine;
 */
 public class AttackJudge : MonoBehaviour
 {
-    // 判定的 collider2D 对象
-    public Collider2D coll;
+    // 攻击判定的 collider2D 对象
+    public Collider2D attack1Coll;
+    // 防御判定的 collider2D 对象
+    public Collider2D BlockColl;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,11 +26,19 @@ public class AttackJudge : MonoBehaviour
     
     // 开始攻击判定
     void BeginAttack1Judge(){
-        coll.enabled = true;
+        attack1Coll.enabled = true;
     }
     // 结束攻击判定
     void EndAttack1Judge(){
-        coll.enabled = false;
+        attack1Coll.enabled = false;
     }
     
+    // 开始防御判定
+    void BeginBlockJudge(){
+        BlockColl.enabled = true;
+    }
+    // 结束防御判定
+    public void EndBlockJudge(){
+        BlockColl.enabled = false;
+    }
 }

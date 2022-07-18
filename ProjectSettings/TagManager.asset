@@ -6,6 +6,8 @@ TagManager:
   tags:
   - BoundsConfiner
   - Enemy
+  - EnemyAttack
+  - PlayerBody
   layers:
   - Default
   - TransparentFX

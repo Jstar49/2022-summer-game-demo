@@ -6,6 +6,7 @@ public class PlayerControl : MonoBehaviour
 {
     private Rigidbody2D player;
     public Collider2D coll;
+    public Collider2D bodyColl;
     private Animator anim;
     [Header("移动参数")]
     public float speed;
@@ -79,6 +80,8 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) ){
             if (!anim.GetBool("Block")){
                 anim.SetBool("Block", true);
+                bodyColl.enabled = false;
+                // 如果是在移动状态，停止移动
                 if (anim.GetFloat("Running") > 0.1f){
                     player.velocity = new Vector2(0f * speed, player.velocity.y);
                     anim.SetFloat("Running", Mathf.Abs(0f));
@@ -86,9 +89,9 @@ public class PlayerControl : MonoBehaviour
             }
         }
         if (Input.GetKeyUp(KeyCode.C) ){
-            
+            gameObject.GetComponent<AttackJudge>().EndBlockJudge();
             anim.SetBool("Block", false);
-            
+            bodyColl.enabled = true;
         }
     }
     // 跳跃

@@ -107,6 +107,7 @@ public class Boblin : Enemy
         }
     }
     
+    // 摧毁对象
     protected override void DeathDestroyGameObj(){
         Debug.Log("Destroy(gameObject)");
         Destroy(gameObject);
@@ -126,5 +127,19 @@ public class Boblin : Enemy
         anim.SetBool("Attack", false);
         attackCDTime = 0f;
     }
-
+    // 收到攻击的事件
+    public override void Attacked(int demage){
+        base.Attacked(demage);
+        Debug.Log("遭受攻击");
+        // 遭受攻击后击飞
+        if (playerTrans.position.x > transform.position.x){
+            // 玩家在右边，向左击飞
+            body.AddForce(new Vector2(-moveSpeed,2f), ForceMode2D.Impulse);
+        }
+        else{
+            // 玩家在左边，向右击飞
+            body.AddForce(new Vector2(moveSpeed,2f), ForceMode2D.Impulse);
+        }
+        
+    }
 }

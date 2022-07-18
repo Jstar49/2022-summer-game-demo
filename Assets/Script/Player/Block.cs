@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttack : MonoBehaviour
+/*
+* 定义防御判断以及防御行为
+*/
+public class Block : MonoBehaviour
 {
-    public int attackDemage;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,13 +18,13 @@ public class EnemyAttack : MonoBehaviour
     {
         
     }
+
+    // 当与敌人的攻击 collider 碰撞时触发
     private void  OnTriggerEnter2D(Collider2D collision) {
         // Debug.Log("collision Judge!...");
-        if (collision.gameObject.tag == "PlayerBody"){
-            Debug.Log("Attacked Player ! ....");
+        if (collision.gameObject.tag == "EnemyAttack"){
+            Debug.Log("Touch Attack!...");
             // Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-            // Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-            collision.gameObject.GetComponentInParent<PlayerControl>().Hurted(attackDemage);
             // Debug.Log(enemy);
             // enemy.Attacked(attackDemage);
         }
