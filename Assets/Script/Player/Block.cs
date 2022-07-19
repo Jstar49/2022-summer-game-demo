@@ -24,6 +24,7 @@ public class Block : MonoBehaviour
         // Debug.Log("collision Judge!...");
         if (collision.gameObject.tag == "EnemyAttack"){
             Debug.Log("Touch Attack!...");
+            gameObject.GetComponentInParent<Animator>().SetTrigger("BlockA");
             // Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             // Debug.Log(enemy);
             // enemy.Attacked(attackDemage);
