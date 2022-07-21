@@ -21,7 +21,9 @@ public class PlayerControl : MonoBehaviour
 
     [Header("玩家状态")]
     // 生命值
-    public int health;
+    public int health_now;
+    // 蓝条
+    public int blue_now;
     public UI_PlayerStatus ui_PlayerStatus;
     
 
@@ -31,7 +33,9 @@ public class PlayerControl : MonoBehaviour
         rollSpeed = speed;
         player = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        // 血条与蓝条初始化
         PlayerHealthChanged();
+        PlayerBlueChanged();
     }
 
     // Update is called once per frame
@@ -130,16 +134,32 @@ public class PlayerControl : MonoBehaviour
     // 攻击判定
     void Attack(){
         if (Input.GetKeyDown(KeyCode.X) ){
-            if ( !anim.GetBool("Rolling")
-                ){
+            if ( !anim.GetBool("Rolling")){
+                if(anim.GetBool("Attack2")){
+                    anim.SetBool("Attack3", true);
+                }
+                if(anim.GetBool("Attack")){
+                    anim.SetBool("Attack2", true);
+                }
                 anim.SetBool("Attack", true);
+                
             }
+            
             
         }
     }
     // 攻击结束
     void AttackEnd(){
         anim.SetBool("Attack", false);
+    }
+    void Attack2End(){
+        anim.SetBool("Attack", false);
+        anim.SetBool("Attack2", false);
+    }
+    void Attack3End(){
+        anim.SetBool("Attack", false);
+        anim.SetBool("Attack2", false);
+        anim.SetBool("Attack3", false);
     }
     //动画切换
     void SwitchAnim()
@@ -173,14 +193,18 @@ public class PlayerControl : MonoBehaviour
             anim.SetBool("Idle", true);
         }
     }
-
+    // 恢复蓝量
+    public void GetBlue(int num){
+        blue_now += num;
+        PlayerBlueChanged();
+    }
     // 遭受伤害
     public void Hurted(int demage){
         anim.SetBool("Hurt",true);
-        health -= demage;
+        health_now += demage;
         // 生命值变化触发函数
         PlayerHealthChanged();
-        if (health <= 0){
+        if (health_now <= 0){
             anim.SetTrigger("Death");
         }
     }
@@ -195,6 +219,10 @@ public class PlayerControl : MonoBehaviour
 
     // 生命值发生变化时触发函数
     public void PlayerHealthChanged(){
-        ui_PlayerStatus.HeathChanged(health);
+        ui_PlayerStatus.HeathChanged(health_now);
+    }
+    // 蓝条变化
+    public void PlayerBlueChanged(){
+        ui_PlayerStatus.BlueChanged(blue_now);
     }
 }

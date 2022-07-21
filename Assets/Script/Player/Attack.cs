@@ -25,6 +25,8 @@ public class Attack : MonoBehaviour
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             Debug.Log(enemy);
             enemy.Attacked(attackDemage);
+            // 普通攻击给敌人造成伤害恢复蓝量
+            gameObject.GetComponentInParent<PlayerControl>().GetBlue(1);
         }
     }
 }

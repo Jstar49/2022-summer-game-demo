@@ -22,7 +22,7 @@ public class EnemyAttack : MonoBehaviour
             Debug.Log("Attacked Player ! ....");
             // Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             // Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-            collision.gameObject.GetComponentInParent<PlayerControl>().Hurted(attackDemage);
+            collision.gameObject.GetComponentInParent<PlayerControl>().Hurted(-attackDemage);
             // Debug.Log(enemy);
             // enemy.Attacked(attackDemage);
         }
