@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boblin : Enemy
+/*
+* 敌人控制基础脚本
+*/
+public class BaseEnemyControl : Enemy
 {
     // 攻击判定的 collider2D 对象
     public Collider2D attackColl;
@@ -23,7 +26,6 @@ public class Boblin : Enemy
         rightx = rightPoint.position.x;
         Destroy(leftPoint.gameObject);
         Destroy(rightPoint.gameObject);
-        
     }
 
     // Update is called once per frame
