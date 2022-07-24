@@ -9,7 +9,10 @@ public class PlayerControl : MonoBehaviour
     public Collider2D bodyColl;
     private Animator anim;
     [Header("移动参数")]
-    public float speed;
+    public float moveSpeed;
+    public float nowSpeed;
+    // 敌人 layer
+    public LayerMask enemyLayer;
     //翻滚速度
     private float rollSpeed;
     private float xVelocity;
@@ -30,7 +33,8 @@ public class PlayerControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rollSpeed = speed;
+        nowSpeed = moveSpeed;
+        rollSpeed = moveSpeed;
         player = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         // 血条与蓝条初始化
@@ -48,8 +52,15 @@ public class PlayerControl : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        // 物理检测
+        PhysicsCheck();
         PlayerMovement();
         SwitchAnim();
+    }
+    void PhysicsCheck(){
+        // RaycastHit2D rightCheck = Raycast(new Vector2(0.2f, 0f), Vector2.right, 0.2f, enemyLayer);
+        // RaycastHit2D leftCheck = Raycast(new Vector2(-0.2f, 0f), Vector2.left, 0.2f, enemyLayer);
+        // if ()
     }
     // 移动
     public void PlayerMovement()
@@ -57,18 +68,33 @@ public class PlayerControl : MonoBehaviour
         xVelocity = Input.GetAxis("Horizontal");
         // Debug.Log(xVelocity);
         FilpDirection();
-        // 在某些时候不应该允许移动，比如防御的时候
-        if (!anim.GetBool("Block")){
-            player.velocity = new Vector2(xVelocity * speed*Time.deltaTime*60, player.velocity.y);
-            anim.SetFloat("Running", Mathf.Abs(xVelocity));
+        RaycastHit2D moveDirectEnemy = Raycast(new Vector2(xVelocity>0.1f?0.2f:-0.2f, 0f), new Vector2(xVelocity, 0f), 0.5f, enemyLayer);
+        if (!anim.GetBool("Rolling")){
+            if (moveDirectEnemy){
+                nowSpeed = 0f;
+            }else{
+                nowSpeed = moveSpeed;
+            }
         }
         
-
-        // 跳跃
-        //if (Input.GetKeyDown(KeyCode.C) && coll.IsTouchingLayers(ground))
-        
-        // Croush();
+        // 在某些时候不应该允许移动，比如防御的时候
+        if (!anim.GetBool("Block")){
+            // nowSpeed = moveSpeed;
+            player.velocity = new Vector2(xVelocity * nowSpeed*Time.deltaTime*60, player.velocity.y);
+            anim.SetFloat("Running", Mathf.Abs(xVelocity));
+        }
     }
+    // 射线`
+    // RaycastHit2D Raycast(Vector2 offset, Vector2 rayDiraction, float length, LayerMask layer)
+    // {
+    //     Vector2 pos = transform.position;
+    //     RaycastHit2D hit = Physics2D.Raycast(pos + offset, rayDiraction, length, layer);
+
+    //     Color color = hit ? Color.red : Color.green;
+
+    //     Debug.DrawRay(pos + offset, rayDiraction * length, color);
+    //     return hit;
+    // }
     // 角色朝向翻转
     void FilpDirection()
     {
@@ -87,7 +113,7 @@ public class PlayerControl : MonoBehaviour
                 bodyColl.enabled = false;
                 // 如果是在移动状态，停止移动
                 if (anim.GetFloat("Running") > 0.1f){
-                    player.velocity = new Vector2(0f * speed, player.velocity.y);
+                    player.velocity = new Vector2(0f * nowSpeed, player.velocity.y);
                     anim.SetFloat("Running", Mathf.Abs(0f));
                 }
             }
@@ -114,9 +140,10 @@ public class PlayerControl : MonoBehaviour
                 anim.GetBool("Idle")) &&
                 (!anim.GetBool("Jumping") && !anim.GetBool("Falling") && !anim.GetBool("Rolling"))){
                 anim.SetBool("Rolling", true);
+                gameObject.layer = LayerMask.NameToLayer("Enemy");
                 if (anim.GetFloat("Running")>0.1f){
                     // player.AddForce(new Vector2(jumpForce,0f), ForceMode2D.Impulse);
-                    speed = speed + rollSpeed;
+                    nowSpeed = moveSpeed * 2;
                 }
                 // anim.SetBool("Idle", false);
             }
@@ -126,8 +153,9 @@ public class PlayerControl : MonoBehaviour
     // 翻滚结束
     void RollEnd(){
         anim.SetBool("Rolling", false);
+        gameObject.layer = LayerMask.NameToLayer("Player");
         if (anim.GetFloat("Running")>0.1f){
-            speed = rollSpeed;
+            nowSpeed = moveSpeed;
         }
         
     }
@@ -224,5 +252,16 @@ public class PlayerControl : MonoBehaviour
     // 蓝条变化
     public void PlayerBlueChanged(){
         ui_PlayerStatus.BlueChanged(blue_now);
+    }
+    
+    private RaycastHit2D Raycast(Vector2 offset, Vector2 rayDiraction, float length, LayerMask layer)
+    {
+        Vector2 pos = transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(pos + offset, rayDiraction, length, layer);
+
+        Color color = hit ? Color.red : Color.green;
+
+        Debug.DrawRay(pos + offset, rayDiraction * length, color);
+        return hit;
     }
 }

@@ -21,6 +21,7 @@ public class BaseEnemyControl : Enemy
     protected override void Start()
     {
         base.Start();
+        nowSpeed = moveSpeed;
         attackCDTime = 0f;
         leftx = leftPoint.position.x;
         rightx = rightPoint.position.x;
@@ -49,19 +50,25 @@ public class BaseEnemyControl : Enemy
             if (distance.x <= 2f && distance.x >=0){
                 base.Attack();
                 // attackCDTime = 0f;
+                nowSpeed = 0;
+            }else{
+                nowSpeed = moveSpeed;
             }
         }
         else{
             if (distance.x >= -2f && distance.x <=0){
                 base.Attack();
                 // attackCDTime = 0f;
+                nowSpeed = 0;
+            }else{
+                nowSpeed = moveSpeed;
             }
         }
     }
     // 当玩家在巡逻范围时，追击玩家
     void GotoAttackPlayer(){
         if (!PlayerInMovePath()) return;
-        anim.SetFloat("Runing",moveSpeed);
+        anim.SetFloat("Runing",nowSpeed);
         // 在玩家左边
         if (playerTrans.position.x < transform.position.x){
             // faceLeft = true;
@@ -88,23 +95,23 @@ public class BaseEnemyControl : Enemy
     // 巡逻移动
     public void GoblinMove(){
         // if (PlayerInMovePath()) return;
-        anim.SetFloat("Runing",moveSpeed);
+        anim.SetFloat("Runing",nowSpeed);
         
         if (faceLeft){
             if (transform.position.x <= leftx){
-                body.velocity = new Vector2(moveSpeed, body.velocity.y);
+                body.velocity = new Vector2(nowSpeed, body.velocity.y);
                 transform.localScale = new Vector3(1,1,1);
                 faceLeft = false;
             }else{
-                body.velocity = new Vector2(-moveSpeed, body.velocity.y);
+                body.velocity = new Vector2(-nowSpeed, body.velocity.y);
             }
         }else{
             if (transform.position.x >= rightx){
-                body.velocity = new Vector2(-moveSpeed, body.velocity.y);
+                body.velocity = new Vector2(-nowSpeed, body.velocity.y);
                 transform.localScale = new Vector3(-1,1,1);
                 faceLeft = true;
             }else{
-                body.velocity = new Vector2(moveSpeed, body.velocity.y);
+                body.velocity = new Vector2(nowSpeed, body.velocity.y);
             }
         }
     }
@@ -136,11 +143,11 @@ public class BaseEnemyControl : Enemy
         // 遭受攻击后击飞
         if (playerTrans.position.x > transform.position.x){
             // 玩家在右边，向左击飞
-            body.AddForce(new Vector2(-moveSpeed,2f), ForceMode2D.Impulse);
+            body.AddForce(new Vector2(-nowSpeed,2f), ForceMode2D.Impulse);
         }
         else{
             // 玩家在左边，向右击飞
-            body.AddForce(new Vector2(moveSpeed,2f), ForceMode2D.Impulse);
+            body.AddForce(new Vector2(nowSpeed,2f), ForceMode2D.Impulse);
         }
         
     }

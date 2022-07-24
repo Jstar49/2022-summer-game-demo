@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public int Wealth;
     // 移动速度
     public float moveSpeed;
+    public float nowSpeed;
     // 动画对象
     protected Animator anim;
     // 死亡音效

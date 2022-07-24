@@ -123,6 +123,23 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &215897531 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1447623083319583454, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+  m_PrefabInstance: {fileID: 3507934175986609147}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &215897534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215897531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7337aaf2d0deb1746b5d29725da54fc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,6 +1049,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 76770565526533054, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 437202985369303494, guid: dec89719db8f94942901cc051e0513c0, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1039,6 +1060,18 @@ PrefabInstance:
     - target: {fileID: 3507934176326665164, guid: dec89719db8f94942901cc051e0513c0, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507934176326665164, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507934177466150144, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507934177466150144, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+      propertyPath: m_Simulated
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3507934177466150145, guid: dec89719db8f94942901cc051e0513c0, type: 3}
       propertyPath: m_RootOrder
@@ -1093,12 +1126,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3507934177466150151, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+      propertyPath: moveSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507934177466150151, guid: dec89719db8f94942901cc051e0513c0, type: 3}
       propertyPath: health_now
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3507934177466150151, guid: dec89719db8f94942901cc051e0513c0, type: 3}
       propertyPath: ui_PlayerStatus
       value: 
       objectReference: {fileID: 1413796822}
+    - target: {fileID: 3507934177466150151, guid: dec89719db8f94942901cc051e0513c0, type: 3}
+      propertyPath: enemyLayer.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dec89719db8f94942901cc051e0513c0, type: 3}
