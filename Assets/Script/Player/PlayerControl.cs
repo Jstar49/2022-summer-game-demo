@@ -12,7 +12,7 @@ public class PlayerControl : MonoBehaviour
     public float moveSpeed;
     public float nowSpeed;
     // 敌人 layer
-    public LayerMask enemyLayer;
+    // public LayerMask enemyLayer;
     //翻滚速度
     private float rollSpeed;
     private float xVelocity;
@@ -27,6 +27,8 @@ public class PlayerControl : MonoBehaviour
     public int health_now;
     // 蓝条
     public int blue_now;
+    // 金币
+    public int coinNum;
     public UI_PlayerStatus ui_PlayerStatus;
     
 
@@ -68,7 +70,7 @@ public class PlayerControl : MonoBehaviour
         xVelocity = Input.GetAxis("Horizontal");
         // Debug.Log(xVelocity);
         FilpDirection();
-        RaycastHit2D moveDirectEnemy = Raycast(new Vector2(xVelocity>0.1f?0.2f:-0.2f, 0f), new Vector2(xVelocity, 0f), 0.5f, enemyLayer);
+        RaycastHit2D moveDirectEnemy = Raycast(new Vector2(xVelocity>0.1f?0.2f:-0.2f, 0f), new Vector2(xVelocity, 0f), 0.5f, LayerMask.GetMask("Enemy"));
         if (!anim.GetBool("Rolling")){
             if (moveDirectEnemy){
                 nowSpeed = 0f;
@@ -263,5 +265,9 @@ public class PlayerControl : MonoBehaviour
 
         Debug.DrawRay(pos + offset, rayDiraction * length, color);
         return hit;
+    }
+
+    public void GetCoin(int value){
+        coinNum += value;
     }
 }
