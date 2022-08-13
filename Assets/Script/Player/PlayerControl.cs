@@ -29,7 +29,13 @@ public class PlayerControl : MonoBehaviour
     public int blue_now;
     // 金币
     public int coinNum;
-    public UI_PlayerStatus ui_PlayerStatus;
+    // public UI_PlayerStatus ui_PlayerStatus;
+    [Header("UI控制基类")]
+    public UI_Base_Control uI_Base_Control;
+    [Header("数据控制基类")]
+    public Data_Base_Control data_Base_Control;
+
+    // public Souls soulsControl;
     
 
     // Start is called before the first frame update
@@ -70,7 +76,9 @@ public class PlayerControl : MonoBehaviour
         xVelocity = Input.GetAxis("Horizontal");
         // Debug.Log(xVelocity);
         FilpDirection();
-        RaycastHit2D moveDirectEnemy = Raycast(new Vector2(xVelocity>0.1f?0.2f:-0.2f, 0f), new Vector2(xVelocity, 0f), 0.5f, LayerMask.GetMask("Enemy"));
+        RaycastHit2D moveDirectEnemy = Raycast(new Vector2(xVelocity>0.1f?0.2f:-0.2f, 0f), 
+                                            new Vector2(xVelocity, 0f), 
+                                            0.5f, LayerMask.GetMask("Enemy"));
         if (!anim.GetBool("Rolling")){
             if (moveDirectEnemy){
                 nowSpeed = 0f;
@@ -86,17 +94,6 @@ public class PlayerControl : MonoBehaviour
             anim.SetFloat("Running", Mathf.Abs(xVelocity));
         }
     }
-    // 射线`
-    // RaycastHit2D Raycast(Vector2 offset, Vector2 rayDiraction, float length, LayerMask layer)
-    // {
-    //     Vector2 pos = transform.position;
-    //     RaycastHit2D hit = Physics2D.Raycast(pos + offset, rayDiraction, length, layer);
-
-    //     Color color = hit ? Color.red : Color.green;
-
-    //     Debug.DrawRay(pos + offset, rayDiraction * length, color);
-    //     return hit;
-    // }
     // 角色朝向翻转
     void FilpDirection()
     {
@@ -231,9 +228,10 @@ public class PlayerControl : MonoBehaviour
     // 遭受伤害
     public void Hurted(int demage){
         anim.SetBool("Hurt",true);
-        health_now += demage;
+        // health_now += demage;
         // 生命值变化触发函数
-        PlayerHealthChanged();
+        // PlayerHealthChanged();
+        data_Base_Control.UpdateWealth(demage);
         if (health_now <= 0){
             anim.SetTrigger("Death");
         }
@@ -247,15 +245,11 @@ public class PlayerControl : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // 生命值发生变化时触发函数
-    public void PlayerHealthChanged(){
-        ui_PlayerStatus.HeathChanged(health_now);
-    }
     // 蓝条变化
     public void PlayerBlueChanged(){
         ui_PlayerStatus.BlueChanged(blue_now);
     }
-    
+    // 射线
     private RaycastHit2D Raycast(Vector2 offset, Vector2 rayDiraction, float length, LayerMask layer)
     {
         Vector2 pos = transform.position;
@@ -267,7 +261,13 @@ public class PlayerControl : MonoBehaviour
         return hit;
     }
 
+    // 获得硬币
     public void GetCoin(int value){
         coinNum += value;
+        // 
+        Debug.Log(value);
+        data_Base_Control.UpdateSouls(value);
+        // UI 更新
+        // uI_Base_Control.UpdateSouls();
     }
 }

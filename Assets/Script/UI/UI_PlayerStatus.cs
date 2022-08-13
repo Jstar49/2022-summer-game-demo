@@ -17,8 +17,8 @@ public class UI_PlayerStatus : MonoBehaviour
     {
         
     }
-    // 血条变化
-    public void HeathChanged(int health){
+    // 血条变化 
+    public void WeathChanged(int health){
         // Debug.Log(red.rectTransform.rect.width);
         red.rectTransform.sizeDelta = new Vector2(health*20, 30);
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());

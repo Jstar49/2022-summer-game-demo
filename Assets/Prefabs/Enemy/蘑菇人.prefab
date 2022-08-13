@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: 4510368176304640185}
   - component: {fileID: 4510368176304640184}
   - component: {fileID: 4510368176304640181}
-  - component: {fileID: 4510368176304640180}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: "\u8611\u83C7\u4EBA"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -131,7 +130,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 19c45187613fd2f418c487d95da62748, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &4510368176304640184
 BoxCollider2D:
@@ -174,33 +173,13 @@ MonoBehaviour:
   attackDemage: 0
   Wealth: 3
   moveSpeed: 3
+  nowSpeed: 0
   body: {fileID: 0}
+  deathReward: {fileID: 1136936912804576185, guid: 68dcce19bca0cfb46b2b2a84d81d87d6, type: 3}
   attackColl: {fileID: 4510368176395104465}
   attackCDTime: 2
   playerTrans: {fileID: 0}
-  leftPoint: {fileID: 4510368177869703391}
-  rightPoint: {fileID: 4510368176493883749}
-  leftx: 0
-  rightx: 0
---- !u!114 &4510368176304640180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4510368176304640189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a4720f72d002b4ca24dfd5ab9e8168, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackDemage: 0
-  Wealth: 3
-  moveSpeed: 3
-  body: {fileID: 0}
-  attackColl: {fileID: 4510368176395104465}
-  attackCDTime: 2
-  playerTrans: {fileID: 0}
+  canAttackLength: 0.2
   leftPoint: {fileID: 4510368177869703391}
   rightPoint: {fileID: 4510368176493883749}
   leftx: 0
@@ -263,12 +242,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.63539696, y: 0.8727193}
+    - - {x: 1.1782379, y: 0.19346285}
+      - {x: 0.97335625, y: 0.6548848}
+      - {x: 0.63539696, y: 0.8727193}
       - {x: 0.12303829, y: 0.8747864}
       - {x: -0.38316345, y: 0.033964157}
       - {x: 0.06430149, y: -0.66150904}
       - {x: 0.9404373, y: -0.66473365}
-      - {x: 1.0848894, y: -0.048660755}
+      - {x: 1.0977459, y: -0.65688896}
+      - {x: 1.1951456, y: 0.163373}
 --- !u!114 &4510368176395104464
 MonoBehaviour:
   m_ObjectHideFlags: 0

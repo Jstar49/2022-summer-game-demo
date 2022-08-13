@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8808561005676951663}
   - component: {fileID: 8808561005676951656}
   - component: {fileID: 8173778041199658105}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: "\u9AB7\u9AC5\u9A91\u58EB"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 19c45187613fd2f418c487d95da62748, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &8808561005676951656
 BoxCollider2D:
@@ -173,10 +173,13 @@ MonoBehaviour:
   attackDemage: 0
   Wealth: 3
   moveSpeed: 3
+  nowSpeed: 0
   body: {fileID: 0}
+  deathReward: {fileID: 1136936912804576185, guid: 68dcce19bca0cfb46b2b2a84d81d87d6, type: 3}
   attackColl: {fileID: 8808561006496244120}
   attackCDTime: 2
   playerTrans: {fileID: 0}
+  canAttackLength: 0.65
   leftPoint: {fileID: 8808561006048688545}
   rightPoint: {fileID: 8808561005995099782}
   leftx: 0

@@ -13,14 +13,18 @@ public class BaseEnemyControl : Enemy
     public float attackCDTime;
     // 玩家位置
     public Transform playerTrans;
+    // 攻击判定的距离
+    public float canAttackLength;
     // 巡逻的位置
     public Transform leftPoint,rightPoint;
+    // private RaycastHit2D canAttack;
     public float leftx,rightx;
     private bool faceLeft = false;
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
         nowSpeed = moveSpeed;
         attackCDTime = 0f;
         leftx = leftPoint.position.x;
@@ -32,38 +36,34 @@ public class BaseEnemyControl : Enemy
     // Update is called once per frame
     void Update()
     {
+        // 玩家位置
         playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
-        // 移动
-        GoblinMove();
-        // 判断玩家是否在巡逻范围内
-        GotoAttackPlayer();
-        // 攻击玩家行为
-        AttackPlayer();
+        attackCDTime += Time.deltaTime;
+    }
+    private void FixedUpdate() {
         
+        // 玩家在攻击范围内？
+        RaycastHit2D canAttacks = Raycast(new Vector2(faceLeft?-1f:1f, 0f), 
+                                    new Vector2(faceLeft?-1f:1f, 0f), canAttackLength, 
+                                    LayerMask.GetMask("Player"));
+        if (!canAttacks){
+            // 移动
+            GoblinMove();
+            // 判断玩家是否在巡逻范围内
+            GotoAttackPlayer();
+        }else{
+            // 攻击玩家行为
+            // 停止移动
+            nowSpeed = 0;
+            body.velocity = new Vector2(0,0);
+            anim.SetFloat("Runing",nowSpeed);
+            AttackPlayer();
+        }
     }
     public void AttackPlayer(){
-        attackCDTime += Time.deltaTime;
-        // 敌人与玩家的距离
-        Vector3 distance = transform.position - playerTrans.position;
+        // 攻击间距
         if (attackCDTime <= 2.0f) return;
-        if (faceLeft){
-            if (distance.x <= 2f && distance.x >=0){
-                base.Attack();
-                // attackCDTime = 0f;
-                nowSpeed = 0;
-            }else{
-                nowSpeed = moveSpeed;
-            }
-        }
-        else{
-            if (distance.x >= -2f && distance.x <=0){
-                base.Attack();
-                // attackCDTime = 0f;
-                nowSpeed = 0;
-            }else{
-                nowSpeed = moveSpeed;
-            }
-        }
+        base.Attack();
     }
     // 当玩家在巡逻范围时，追击玩家
     void GotoAttackPlayer(){
@@ -95,23 +95,26 @@ public class BaseEnemyControl : Enemy
     // 巡逻移动
     public void GoblinMove(){
         // if (PlayerInMovePath()) return;
+        nowSpeed = moveSpeed;
         anim.SetFloat("Runing",nowSpeed);
-        
+        // nowSpeed = moveSpeed;
         if (faceLeft){
+            // 转向
             if (transform.position.x <= leftx){
-                body.velocity = new Vector2(nowSpeed, body.velocity.y);
+                body.velocity = new Vector2(nowSpeed*Time.deltaTime*60, body.velocity.y);
                 transform.localScale = new Vector3(1,1,1);
                 faceLeft = false;
             }else{
-                body.velocity = new Vector2(-nowSpeed, body.velocity.y);
+                body.velocity = new Vector2(-nowSpeed*Time.deltaTime*60, body.velocity.y);
             }
         }else{
+            // 转向
             if (transform.position.x >= rightx){
-                body.velocity = new Vector2(-nowSpeed, body.velocity.y);
+                body.velocity = new Vector2(-nowSpeed*Time.deltaTime*60, body.velocity.y);
                 transform.localScale = new Vector3(-1,1,1);
                 faceLeft = true;
             }else{
-                body.velocity = new Vector2(nowSpeed, body.velocity.y);
+                body.velocity = new Vector2(nowSpeed*Time.deltaTime*60, body.velocity.y);
             }
         }
     }
@@ -150,5 +153,16 @@ public class BaseEnemyControl : Enemy
             body.AddForce(new Vector2(nowSpeed,2f), ForceMode2D.Impulse);
         }
         
+    }
+    // 射线
+    private RaycastHit2D Raycast(Vector2 offset, Vector2 rayDiraction, float length, LayerMask layer)
+    {
+        Vector2 pos = transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(pos + offset, rayDiraction, length, layer);
+
+        Color color = hit ? Color.red : Color.green;
+
+        Debug.DrawRay(pos + offset, rayDiraction * length, color);
+        return hit;
     }
 }
