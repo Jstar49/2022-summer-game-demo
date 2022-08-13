@@ -29,4 +29,8 @@ public class Data_Base_Control : MonoBehaviour
     public int UpdateWealth(int nums){
         return data_PlayerStatus.UpdateWealth(nums);
     }
+    // 增加蓝量
+    public void UpdateEnergy(int nums){
+        data_PlayerStatus.UpdateEnergy(nums);
+    }
 }

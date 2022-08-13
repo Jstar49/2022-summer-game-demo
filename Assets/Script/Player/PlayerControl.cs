@@ -22,13 +22,6 @@ public class PlayerControl : MonoBehaviour
 
     public LayerMask ground;
 
-    [Header("玩家状态")]
-    // 生命值
-    public int health_now;
-    // 蓝条
-    public int blue_now;
-    // 金币
-    public int coinNum;
     // public UI_PlayerStatus ui_PlayerStatus;
     [Header("UI控制基类")]
     public UI_Base_Control uI_Base_Control;
@@ -46,8 +39,7 @@ public class PlayerControl : MonoBehaviour
         player = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         // 血条与蓝条初始化
-        PlayerHealthChanged();
-        PlayerBlueChanged();
+        // PlayerHealthChanged();
     }
 
     // Update is called once per frame
@@ -203,17 +195,6 @@ public class PlayerControl : MonoBehaviour
                 anim.SetBool("Falling", true);
             }
         }
-        // else if (isHurt)
-        // {
-        //     anim.SetBool("Hurt", true);
-        //     //anim.SetFloat("Running", 0);
-        //     if (Mathf.Abs(player.velocity.x) < 0.1f)
-        //     {
-        //         anim.SetBool("Hurt", false);
-        //         anim.SetBool("Idle", true);
-        //         isHurt = false;
-        //     }
-        // }
         else if (coll.IsTouchingLayers(ground))
         {
             anim.SetBool("Falling", false);
@@ -222,17 +203,13 @@ public class PlayerControl : MonoBehaviour
     }
     // 恢复蓝量
     public void GetBlue(int num){
-        blue_now += num;
-        PlayerBlueChanged();
+        data_Base_Control.UpdateEnergy(num);
     }
     // 遭受伤害
     public void Hurted(int demage){
         anim.SetBool("Hurt",true);
-        // health_now += demage;
         // 生命值变化触发函数
-        // PlayerHealthChanged();
-        data_Base_Control.UpdateWealth(demage);
-        if (health_now <= 0){
+        if (data_Base_Control.UpdateWealth(demage) == 0){
             anim.SetTrigger("Death");
         }
     }
@@ -245,10 +222,6 @@ public class PlayerControl : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // 蓝条变化
-    public void PlayerBlueChanged(){
-        ui_PlayerStatus.BlueChanged(blue_now);
-    }
     // 射线
     private RaycastHit2D Raycast(Vector2 offset, Vector2 rayDiraction, float length, LayerMask layer)
     {
@@ -263,11 +236,6 @@ public class PlayerControl : MonoBehaviour
 
     // 获得硬币
     public void GetCoin(int value){
-        coinNum += value;
-        // 
-        Debug.Log(value);
         data_Base_Control.UpdateSouls(value);
-        // UI 更新
-        // uI_Base_Control.UpdateSouls();
     }
 }

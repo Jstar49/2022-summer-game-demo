@@ -30,6 +30,8 @@ public class Data_PlayerStatus : ScriptableObject
     public void UpdateEnergy(int nums){
         if (energy + nums >= maxEnergy){
             energy = maxEnergy;
+        }else if (energy + nums <=0){
+            energy = 0;
         }else {
             energy += nums;
         }
