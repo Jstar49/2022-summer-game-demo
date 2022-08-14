@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UI_PlayerStatus : MonoBehaviour
 {
+    public Image maxRed;
     public Image red;
+    public Image maxBlue;
     public Image blue;
     // Start is called before the first frame update
     void Start()
@@ -17,18 +19,24 @@ public class UI_PlayerStatus : MonoBehaviour
     {
         
     }
+    // 血条最大值变化
+    public void MaxWealthChanged(int maxWealth){
+        maxRed.rectTransform.sizeDelta = new Vector2(maxWealth*20, 25);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+    }
     // 血条变化 
     public void WeathChanged(int health){
-        // Debug.Log(red.rectTransform.rect.width);
-        red.rectTransform.sizeDelta = new Vector2(health*20, 30);
+        red.rectTransform.sizeDelta = new Vector2(health*20, 25);
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-        // Debug.Log(red.rectTransform.rect.width);
+    }
+    // 蓝条最大值变化
+    public void MaxBlueChanged(int maxEnergy){
+        maxBlue.rectTransform.sizeDelta = new Vector2(maxEnergy*20, 20);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
     // 蓝条变化
     public void BlueChanged(int blueNum){
-        // Debug.Log(red.rectTransform.rect.width);
         blue.rectTransform.sizeDelta = new Vector2(blueNum*20, 20);
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-        // Debug.Log(red.rectTransform.rect.width);
     }
 }

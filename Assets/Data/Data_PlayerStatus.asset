@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Data_PlayerStatus
   m_EditorClassIdentifier: 
   maxWealth: 10
+  wealth: 3
+  maxEnergy: 7
+  energy: 7
