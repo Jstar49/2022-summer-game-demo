@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,9 @@ public class PlayerControl : MonoBehaviour
     [Header("跳跃参数")]
     public float jumpForce = 2f;
 
+    // 在场景切换或者其他情况下玩家无法控制角色
+    private bool inputDisable;
+
     public LayerMask ground;
 
     // public UI_PlayerStatus ui_PlayerStatus;
@@ -28,8 +32,33 @@ public class PlayerControl : MonoBehaviour
     [Header("数据控制基类")]
     public Data_Base_Control data_Base_Control;
 
-    // public Souls soulsControl;
-    
+    private void OnEnable() {
+        EvenHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EvenHandler.AfterSceneloadEvent += OnAfterSceneUnloadEvent;
+        EvenHandler.MoveToPosition += OnMoveToPosition;
+
+    }
+    private void OnDisable() {
+        EvenHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EvenHandler.AfterSceneloadEvent -= OnAfterSceneUnloadEvent;
+        EvenHandler.MoveToPosition -= OnMoveToPosition;
+    }
+
+    private void OnMoveToPosition(Vector3 targetPosition)
+    {
+        transform.position = targetPosition;
+    }
+
+    private void OnAfterSceneUnloadEvent()
+    {
+        inputDisable = false;
+    }
+
+    private void OnBeforeSceneUnloadEvent()
+    {
+        inputDisable = true;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,17 +74,27 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Jump();
-        Roll();
-        Attack();
-        Block();
+        if (inputDisable == false){
+            Jump();
+            Roll();
+            Attack();
+            Block();
+        }else{
+            xVelocity = 0f;
+        }
+        
     }
 
     private void FixedUpdate() {
+        if (inputDisable == false){
+            
+            PlayerMovement();
+            
+        }
         // 物理检测
         PhysicsCheck();
-        PlayerMovement();
         SwitchAnim();
+        
     }
     void PhysicsCheck(){
         // RaycastHit2D rightCheck = Raycast(new Vector2(0.2f, 0f), Vector2.right, 0.2f, enemyLayer);
@@ -83,7 +122,7 @@ public class PlayerControl : MonoBehaviour
         if (!anim.GetBool("Block")){
             // nowSpeed = moveSpeed;
             player.velocity = new Vector2(xVelocity * nowSpeed*Time.deltaTime*60, player.velocity.y);
-            anim.SetFloat("Running", Mathf.Abs(xVelocity));
+            // anim.SetFloat("Running", Mathf.Abs(xVelocity));
         }
     }
     // 角色朝向翻转
@@ -131,6 +170,7 @@ public class PlayerControl : MonoBehaviour
                 anim.GetBool("Idle")) &&
                 (!anim.GetBool("Jumping") && !anim.GetBool("Falling") && !anim.GetBool("Rolling"))){
                 anim.SetBool("Rolling", true);
+                Debug.Log(" set Rolling true");
                 gameObject.layer = LayerMask.NameToLayer("Enemy");
                 if (anim.GetFloat("Running")>0.1f){
                     // player.AddForce(new Vector2(jumpForce,0f), ForceMode2D.Impulse);
@@ -142,8 +182,9 @@ public class PlayerControl : MonoBehaviour
         }
     }
     // 翻滚结束
-    void RollEnd(){
+    public void RollEnd(){
         anim.SetBool("Rolling", false);
+        Debug.Log(" set Rolling false");
         gameObject.layer = LayerMask.NameToLayer("Player");
         if (anim.GetFloat("Running")>0.1f){
             nowSpeed = moveSpeed;
@@ -187,18 +228,22 @@ public class PlayerControl : MonoBehaviour
         if(player.velocity.y<0.1f && !coll.IsTouchingLayers(ground)){
             anim.SetBool("Falling",true);
         }
-        if (anim.GetBool("Jumping"))
-        {
+        if (anim.GetBool("Jumping")){
             if(player.velocity.y < 0)
             {
                 anim.SetBool("Jumping", false);
                 anim.SetBool("Falling", true);
             }
         }
-        else if (coll.IsTouchingLayers(ground))
-        {
+        else if (coll.IsTouchingLayers(ground)){
             anim.SetBool("Falling", false);
             anim.SetBool("Idle", true);
+        }
+        // 在某些时候不应该允许移动，比如防御的时候
+        if (!anim.GetBool("Block")){
+            // nowSpeed = moveSpeed;
+            // player.velocity = new Vector2(xVelocity * nowSpeed*Time.deltaTime*60, player.velocity.y);
+            anim.SetFloat("Running", Mathf.Abs(xVelocity));
         }
     }
     // 恢复蓝量

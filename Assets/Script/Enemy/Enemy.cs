@@ -34,12 +34,30 @@ public class Enemy : MonoBehaviour
         // demage 为传过来的伤害值
         Wealth -= demage;
         if (Wealth <= 0){
+            // 掉落死亡奖励
             GetDeathReward();
             Deadth();
-            
         }
         else{
+            // 显示受伤动画
             anim.SetBool("Hit",true);
+            // 受伤白色闪光
+            // StartCoroutine(HurtFlash());
+        }
+    }
+    private IEnumerator HurtFlash(){
+        Material mt = gameObject.GetComponent<SpriteRenderer>().material;
+        float x = 1f;
+        float maxAlphaValue = 1f;
+        float alphaValue = maxAlphaValue / x;
+        mt.SetFloat("_FlashAmount", alphaValue);
+        yield return 0 ;
+        while(mt.GetFloat("_FlashAmount") > 0){
+            x += 0.1f;
+            alphaValue = maxAlphaValue / x;
+            alphaValue = alphaValue < 0.02 ? 0: alphaValue;
+            mt.SetFloat("_FlashAmount", alphaValue);
+            yield return 0;
         }
     }
     // 死亡后掉落奖励

@@ -12,18 +12,25 @@ public class Data_Base_Control : MonoBehaviour
 
 
     private void Start() {
+        // 加载数据
+        LoadData();
         // 游戏开始时更新血条和精力条与精力条
         UpdateMaxWealthAndMaxEnergy(0,0);
         UpdateWealth(0);
         UpdateEnergy(0);
         // 更新魂数量
         UpdateSouls(0);
-        SaveData();
+        // 保存数据
+        // SaveData();
     }
 
     public void SaveData(){
         data_Base_Souls.SaveData();
         data_PlayerStatus.SaveData();
+    }
+    public void LoadData(){
+        data_Base_Souls.LoadData();
+        data_PlayerStatus.LoadData();
     }
 
     // 更新魂

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class CameraController : MonoBehaviour
 {
     // 摄像机镜头移动速度
@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 
     // Player 所在位置
     public Transform playerPosition;
+
 
     // Update is called once per frame
     void Update()

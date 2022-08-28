@@ -57,7 +57,7 @@ public class coin : MonoBehaviour
         RaycastHit2D coinhit = Raycast(new Vector2(-0.3f, 0f), new Vector2(0.6f, 0f), 1f, LayerMask.GetMask("Player"));
         if (coinhit){
             coinhit.collider.gameObject.GetComponent<PlayerControl>().GetCoin(value);
-            Debug.Log(value);
+            // Debug.Log(value);
             Destroy(gameObject);
         }
         // if (canMove){

@@ -28,4 +28,9 @@ public class Data_Base_Souls : ScriptableObject
       File.WriteAllText(filePath, jsonInfo);
    }
    // 读取数据
+   public void LoadData(){
+      string filePath = Application.dataPath+"/Data/data_Souls.json";
+      string jsonInfo = File.ReadAllText(filePath);
+      JsonUtility.FromJsonOverwrite(jsonInfo,this);
+   }
 }

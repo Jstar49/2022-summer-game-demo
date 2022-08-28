@@ -26,6 +26,11 @@ public class Data_PlayerStatus : ScriptableObject
         File.WriteAllText(filePath, jsonInfo);
     }
     // 读取数据
+    public void LoadData(){
+      string filePath = Application.dataPath+"/Data/data_PlayerStatus.json";
+      string jsonInfo = File.ReadAllText(filePath);
+      JsonUtility.FromJsonOverwrite(jsonInfo,this);
+    }
     // 更新生命值
     public int UpdateWealth(int nums){
         if (wealth + nums >= maxWealth){
