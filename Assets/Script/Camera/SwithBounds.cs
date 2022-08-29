@@ -19,7 +19,7 @@ public class SwithBounds : MonoBehaviour
     // 游戏内场景边界
     public void SwitchConfinerShape()
     {
-        Debug.Log(GameObject.FindGameObjectWithTag("BoundsConfiner"));
+        // Debug.Log(GameObject.FindGameObjectWithTag("BoundsConfiner"));
         PolygonCollider2D confinerShape = GameObject.FindGameObjectWithTag("BoundsConfiner").GetComponent<PolygonCollider2D>();
         
         CinemachineConfiner confiner = GetComponent<CinemachineConfiner>();

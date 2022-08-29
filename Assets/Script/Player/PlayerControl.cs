@@ -172,9 +172,11 @@ public class PlayerControl : MonoBehaviour
                 anim.SetBool("Rolling", true);
                 Debug.Log(" set Rolling true");
                 gameObject.layer = LayerMask.NameToLayer("Enemy");
+                GameObject.FindGameObjectWithTag("PlayerBody").GetComponent<BoxCollider2D>().enabled = false;
                 if (anim.GetFloat("Running")>0.1f){
                     // player.AddForce(new Vector2(jumpForce,0f), ForceMode2D.Impulse);
-                    nowSpeed = moveSpeed * 2;
+                    nowSpeed = moveSpeed * 1.5f;
+                    // nowSpeed = moveSpeed;
                 }
                 // anim.SetBool("Idle", false);
             }
@@ -186,6 +188,7 @@ public class PlayerControl : MonoBehaviour
         anim.SetBool("Rolling", false);
         Debug.Log(" set Rolling false");
         gameObject.layer = LayerMask.NameToLayer("Player");
+        GameObject.FindGameObjectWithTag("PlayerBody").GetComponent<BoxCollider2D>().enabled = true;
         if (anim.GetFloat("Running")>0.1f){
             nowSpeed = moveSpeed;
         }
@@ -252,6 +255,7 @@ public class PlayerControl : MonoBehaviour
     }
     // 遭受伤害
     public void Hurted(int demage){
+        Debug.Log("收到攻击");
         anim.SetBool("Hurt",true);
         // 生命值变化触发函数
         if (data_Base_Control.UpdateWealth(demage) == 0){
